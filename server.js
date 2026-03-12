@@ -52,8 +52,16 @@ app.get('/api/template', (req, res) => {
     if (err) {
       return res.status(500).send('Cannot read files folder')
     }
-    const docxFiles = files.filter((f) => /\.docx$/i.test(f))
-    res.json(docxFiles)
+    const docxFiles = files.filter((f) => /\.docx$/i.test(f));
+    const filename = docxFiles[0];
+    const filePath = path.join(TEMPLATE_DIR, filename);
+    
+    res.download(filePath, filename, (err) => {
+      if (err) {
+        console.error('Error sending file:', err.message)
+        res.status(404).send('File not found')
+      }
+    })
   })
 });
 
