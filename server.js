@@ -8,10 +8,29 @@ const PORT = 4000;
 
 const FILES_DIR = path.join(__dirname, '../../data/files');
 const TEMPLATE_DIR = path.join(__dirname, '../../data/template');
+const STATIC_PART_DATA_DIR = path.join(__dirname, '../../data/staticPart');
 
 app.use(cors({
   origin: 'http://localhost:3000',
 }))
+
+app.get('/api/staticPart', (req, res) => {
+  fs.readdir(STATIC_PART_DATA_DIR, (err, files) => {
+    if (err) {
+      return res.status(500).send('Cannot read files folder')
+    }
+    const docxFiles = files.filter((f) => /\.docx$/i.test(f));
+    const filename = docxFiles[0];
+    const filePath = path.join(STATIC_PART_DATA_DIR, filename);
+    
+    res.download(filePath, filename, (err) => {
+      if (err) {
+        console.error('Error sending file:', err.message)
+        res.status(404).send('File not found')
+      }
+    })
+  })
+});
 
 app.get('/api/template', (req, res) => {
   fs.readdir(TEMPLATE_DIR, (err, files) => {
