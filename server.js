@@ -2,6 +2,8 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
+const EasyDocx = require('node-easy-docx');
+const officeParser = require('officeparser');
 
 const app = express();
 const PORT = 4000;
@@ -22,7 +24,7 @@ app.get('/api/staticPart', (req, res) => {
     const docxFiles = files.filter((f) => /\.docx$/i.test(f));
     const filename = docxFiles[0];
     const filePath = path.join(STATIC_PART_DATA_DIR, filename);
-    
+
     res.download(filePath, filename, (err) => {
       if (err) {
         console.error('Error sending file:', err.message)
@@ -40,7 +42,7 @@ app.get('/api/template', (req, res) => {
     const docxFiles = files.filter((f) => /\.docx$/i.test(f));
     const filename = docxFiles[0];
     const filePath = path.join(TEMPLATE_DIR, filename);
-    
+
     res.download(filePath, filename, (err) => {
       if (err) {
         console.error('Error sending file:', err.message)
@@ -60,6 +62,28 @@ app.get('/api/files', (req, res) => {
   })
 });
 
+// app.get('/api/files/:filename', (req, res) => {
+//   const filename = req.params.filename
+//   const filePath = path.join(FILES_DIR, filename)
+
+//   if (!filePath.startsWith(FILES_DIR)) {
+//     return res.status(400).send('Invalid filename')
+//   }
+
+//   try {
+//     const docx = new EasyDocx({ path: filePath })
+//     docx.parseDocx()
+//       .then(data => res.json(data))
+//       .catch(err => {
+//         console.error('Error parsing file:', err.message)
+//         res.status(500).send('Failed to parse file')
+//       })
+//   } catch (err) {
+//     console.error('Error loading file:', err.message)
+//     res.status(404).send('File not found')
+//   }
+// });
+
 app.get('/api/files/:filename', (req, res) => {
   const filename = req.params.filename
   const filePath = path.join(FILES_DIR, filename)
@@ -75,6 +99,22 @@ app.get('/api/files/:filename', (req, res) => {
     }
   })
 });
+
+// app.get('/api/files/:filename', (req, res) => {
+//   const filename = req.params.filename
+//   const filePath = path.join(FILES_DIR, filename)
+
+//   if (!filePath.startsWith(FILES_DIR)) {
+//     return res.status(400).send('Invalid filename')
+//   }
+
+//   officeParser.parseOffice(filePath)
+//     .then(data => res.json(data))
+//     .catch(err => {
+//       console.error('Error parsing file:', err.message)
+//       res.status(500).send('Failed to parse file')
+//     })
+// });
 
 app.listen(PORT, () => {
   console.log(`Excel dataSource server listening on http://localhost:${PORT}`)
