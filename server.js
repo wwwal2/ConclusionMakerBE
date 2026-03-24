@@ -4,6 +4,8 @@ const path = require('path');
 const cors = require('cors');
 const EasyDocx = require('node-easy-docx');
 const officeParser = require('officeparser');
+const AdmZip = require('adm-zip');
+const { XMLParser } = require('fast-xml-parser');
 
 const app = express();
 const PORT = 4000;
@@ -71,6 +73,28 @@ app.get('/api/files', (req, res) => {
 //   }
 
 //   try {
+//     const zip = new AdmZip(filePath)
+//     const documentXml = zip.readAsText('word/document.xml')
+
+//     const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: '@_' })
+//     const json = parser.parse(documentXml)
+
+//     res.json(json)
+//   } catch (err) {
+//     console.error('Error parsing file:', err.message)
+//     res.status(500).send('Failed to parse file')
+//   }
+// });
+
+// app.get('/api/files/:filename', (req, res) => {
+//   const filename = req.params.filename
+//   const filePath = path.join(FILES_DIR, filename)
+
+//   if (!filePath.startsWith(FILES_DIR)) {
+//     return res.status(400).send('Invalid filename')
+//   }
+
+//   try {
 //     const docx = new EasyDocx({ path: filePath })
 //     docx.parseDocx()
 //       .then(data => res.json(data))
@@ -84,22 +108,6 @@ app.get('/api/files', (req, res) => {
 //   }
 // });
 
-app.get('/api/files/:filename', (req, res) => {
-  const filename = req.params.filename
-  const filePath = path.join(FILES_DIR, filename)
-
-  if (!filePath.startsWith(FILES_DIR)) {
-    return res.status(400).send('Invalid filename')
-  }
-
-  res.download(filePath, filename, (err) => {
-    if (err) {
-      console.error('Error sending file:', err.message)
-      res.status(404).send('File not found')
-    }
-  })
-});
-
 // app.get('/api/files/:filename', (req, res) => {
 //   const filename = req.params.filename
 //   const filePath = path.join(FILES_DIR, filename)
@@ -108,13 +116,32 @@ app.get('/api/files/:filename', (req, res) => {
 //     return res.status(400).send('Invalid filename')
 //   }
 
-//   officeParser.parseOffice(filePath)
-//     .then(data => res.json(data))
-//     .catch(err => {
-//       console.error('Error parsing file:', err.message)
-//       res.status(500).send('Failed to parse file')
-//     })
+//   res.download(filePath, filename, (err) => {
+//     if (err) {
+//       console.error('Error sending file:', err.message)
+//       res.status(404).send('File not found')
+//     }
+//   })
 // });
+
+app.get('/api/files/:filename', (req, res) => {
+  const filename = req.params.filename
+  const filePath = path.join(FILES_DIR, filename)
+
+  if (!filePath.startsWith(FILES_DIR)) {
+    return res.status(400).send('Invalid filename')
+  }
+
+  const data = officeParser.parseOffice(filePath);
+  data.then(data => res.json({
+    plainText: data.toText(),
+    paragraphs: data.content
+  }))
+    .catch(err => {
+      console.error('Error parsing file:', err.message)
+      res.status(500).send('Failed to parse file')
+    });
+});
 
 app.listen(PORT, () => {
   console.log(`Excel dataSource server listening on http://localhost:${PORT}`)
