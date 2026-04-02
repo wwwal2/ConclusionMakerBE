@@ -13,6 +13,7 @@ const PORT = 4000;
 const FILES_DIR = path.join(__dirname, '../../data/files');
 const TEMPLATE_DIR = path.join(__dirname, '../../data/template');
 const STATIC_PART_DATA_DIR = path.join(__dirname, '../../data/staticPart');
+const SAVED_TEXT_POINTSD_DIR = path.join(__dirname, '../../data/saved');
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -33,6 +34,32 @@ app.get('/api/staticPart', (req, res) => {
         res.status(404).send('File not found')
       }
     })
+  })
+});
+
+app.get('/api/defaultSavedTextpoints', (req, res) => {
+  fs.readdir(SAVED_TEXT_POINTSD_DIR, (err, files) => {
+    if (err) {
+      return res.status(500).send('Cannot read files folder')
+    }
+    const jsonFiles = files.filter((f) => /\.json$/i.test(f));
+    const filename = jsonFiles[0];
+    if (!filename) {
+      return res.status(404).send('No JSON file found')
+    }
+    const filePath = path.join(SAVED_TEXT_POINTSD_DIR, filename);
+
+    fs.readFile(filePath, 'utf-8', (err, data) => {
+      if (err) {
+        console.error('Error reading file:', err.message)
+        return res.status(500).send('Failed to read file')
+      }
+      try {
+        res.json(JSON.parse(data));
+      } catch (e) {
+        res.status(500).send('Failed to parse JSON')
+      }
+    });
   })
 });
 
@@ -64,65 +91,7 @@ app.get('/api/files', (req, res) => {
   })
 });
 
-// app.get('/api/files/:filename', (req, res) => {
-//   const filename = req.params.filename
-//   const filePath = path.join(FILES_DIR, filename)
 
-//   if (!filePath.startsWith(FILES_DIR)) {
-//     return res.status(400).send('Invalid filename')
-//   }
-
-//   try {
-//     const zip = new AdmZip(filePath)
-//     const documentXml = zip.readAsText('word/document.xml')
-
-//     const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: '@_' })
-//     const json = parser.parse(documentXml)
-
-//     res.json(json)
-//   } catch (err) {
-//     console.error('Error parsing file:', err.message)
-//     res.status(500).send('Failed to parse file')
-//   }
-// });
-
-// app.get('/api/files/:filename', (req, res) => {
-//   const filename = req.params.filename
-//   const filePath = path.join(FILES_DIR, filename)
-
-//   if (!filePath.startsWith(FILES_DIR)) {
-//     return res.status(400).send('Invalid filename')
-//   }
-
-//   try {
-//     const docx = new EasyDocx({ path: filePath })
-//     docx.parseDocx()
-//       .then(data => res.json(data))
-//       .catch(err => {
-//         console.error('Error parsing file:', err.message)
-//         res.status(500).send('Failed to parse file')
-//       })
-//   } catch (err) {
-//     console.error('Error loading file:', err.message)
-//     res.status(404).send('File not found')
-//   }
-// });
-
-// app.get('/api/files/:filename', (req, res) => {
-//   const filename = req.params.filename
-//   const filePath = path.join(FILES_DIR, filename)
-
-//   if (!filePath.startsWith(FILES_DIR)) {
-//     return res.status(400).send('Invalid filename')
-//   }
-
-//   res.download(filePath, filename, (err) => {
-//     if (err) {
-//       console.error('Error sending file:', err.message)
-//       res.status(404).send('File not found')
-//     }
-//   })
-// });
 
 app.get('/api/files/:filename', (req, res) => {
   const filename = req.params.filename
