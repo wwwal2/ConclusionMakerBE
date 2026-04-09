@@ -10,10 +10,11 @@ const { XMLParser } = require('fast-xml-parser');
 const app = express();
 const PORT = 4000;
 
-const FILES_DIR = path.join(__dirname, '../../data/files');
-const TEMPLATE_DIR = path.join(__dirname, '../../data/template');
-const STATIC_PART_DATA_DIR = path.join(__dirname, '../../data/staticPart');
-const SAVED_TEXT_POINTSD_DIR = path.join(__dirname, '../../data/saved');
+const FILES_DIR = path.join(__dirname, '../../data/файли');
+const STATIC_PART_DATA_DIR = path.join(__dirname, '../../data/попереднє донесення');
+
+const TEMPLATE_DIR = path.join(__dirname, './innerData/template/');
+const SAVED_TEXT_POINTSD_DIR = path.join(__dirname, './innerData/defaultPoints/');
 
 app.use(cors({
   origin: 'http://localhost:3000',
