@@ -2,16 +2,14 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
-const EasyDocx = require('node-easy-docx');
 const officeParser = require('officeparser');
-const AdmZip = require('adm-zip');
-const { XMLParser } = require('fast-xml-parser');
+
 
 const app = express();
 const PORT = 4000;
 
 const FILES_DIR = path.join(__dirname, '../../data/файли');
-const STATIC_PART_DATA_DIR = path.join(__dirname, '../../data/попереднє донесення');
+const STATIC_PART_DATA_DIR = path.join(__dirname, '../../data/попереднє_донесення');
 
 const TEMPLATE_DIR = path.join(__dirname, './innerData/template/');
 const SAVED_TEXT_POINTSD_DIR = path.join(__dirname, './innerData/defaultPoints/');
