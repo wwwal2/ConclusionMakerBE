@@ -1,0 +1,128 @@
+{
+  "LOGISTICS_BATALION": {
+    "count": 3,
+    "textPoints": [
+      {
+        "start": "Дії наших військ:",
+        "checked": true
+      },
+      {
+        "start": "Робота комісій, робочих та інспекційних груп",
+        "checked": true
+      },
+      {
+        "start": "ВТРАТИ",
+        "checked": true
+      }
+    ]
+  },
+  "BATALION_1": {
+    "count": 27,
+    "textPoints": [
+      {
+        "start": "Штурмові дії противника:",
+        "checked": true
+      },
+      {
+        "start": "Дії наших військ:",
+        "checked": true
+      },
+      {
+        "start": "Інформація про бойові втрати",
+        "checked": true
+      }
+    ]
+  },
+  "BATALION_2": {
+    "count": 3,
+    "textPoints": [
+      {
+        "start": "Штурмові дії противника:",
+        "checked": true
+      },
+      {
+        "start": "Дії наших військ:",
+        "checked": true
+      },
+      {
+        "start": "Інформація про бойові втрати",
+        "checked": true
+      }
+    ]
+  },
+  "ADN": {
+    "count": 5,
+    "textPoints": [
+      {
+        "start": "Штурмові дії противника:",
+        "checked": true
+      },
+      {
+        "start": "Дії наших військ:",
+        "checked": true
+      },
+      {
+        "start": "Застосування БпЛА своїх військ",
+        "checked": true
+      },
+      {
+        "start": "Застосування артилерії своїх військ",
+        "checked": true
+      },
+      {
+        "start": "ВТРАТИ",
+        "checked": true
+      }
+    ]
+  },
+  "DRONES_BATALION": {
+    "count": 4,
+    "textPoints": [
+      {
+        "start": "Штурмові дії противника:",
+        "checked": true
+      },
+      {
+        "start": "Дії наших військ:",
+        "checked": true
+      },
+      {
+        "start": "Застосування БпЛА своїх військ",
+        "checked": true
+      },
+      {
+        "start": "Інформація про бойові втрати",
+        "checked": true
+      }
+    ]
+  },
+  "JAMMING_SQUAD": {
+    "count": 6,
+    "textPoints": [
+      {
+        "start": "Штурмові дії противника:",
+        "checked": true
+      },
+      {
+        "start": "Дії наших військ:",
+        "checked": true
+      },
+      {
+        "start": "Застосування БпЛА своїх військ",
+        "checked": true
+      },
+      {
+        "start": "Застосування артилерії своїх військ",
+        "checked": true
+      },
+      {
+        "start": "Застосування засобів РЕБ своїх військ",
+        "checked": true
+      },
+      {
+        "start": "ВТРАТИ",
+        "checked": true
+      }
+    ]
+  }
+}
